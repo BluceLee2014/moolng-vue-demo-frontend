@@ -9,6 +9,9 @@
 
 # 运行
   npm run dev
+
+# 访问
+  http://localhost:8080
 ```
 # moolng-vue-demo
 
