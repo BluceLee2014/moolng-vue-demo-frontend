@@ -3,7 +3,7 @@
 # moolng-vue-demo 安装步骤
 ``` bash
 # 先安装NPM
- 
+
 # 创建依赖
   npm i
 
@@ -17,6 +17,13 @@
 
 > A Vue.js project
 
+> 版本迭代
+---
+`V0.0.0.1`
+
+1.Layout布局设置
+
+2.动态调整高度
 ## Build Setup
 
 ``` bash
