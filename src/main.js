@@ -9,9 +9,13 @@ import 'view-design/dist/styles/iview.css'
 
 import But from './components/mybutton.js'
 
+import HttpClient from './components/utils/HttpClient'
+
 Vue.config.productionTip = false
 
 Vue.use(But)
+Vue.use(HttpClient)
+
 Vue.use(ViewUI)
 
 /* eslint-disable no-new */

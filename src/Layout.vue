@@ -111,7 +111,8 @@
         </Sider>
         <Layout>
           <Content :style="getContentStyle()">
-            <MoolngTable></MoolngTable>
+            <!--            <MoolngTable></MoolngTable>-->
+            <MoolngTags></MoolngTags>
           </Content>
         </Layout>
       </Layout>
@@ -122,7 +123,8 @@
   </div>
 </template>
 <script>
-import MoolngTable from './components/MoolngTable'
+// import MoolngTable from './components/MoolngTable'
+import MoolngTags from './components/MoolngTags'
 
 export default {
   name: 'MoolngLayout',
@@ -135,7 +137,8 @@ export default {
     }
   },
   components: {
-    MoolngTable
+    // MoolngTable,
+    MoolngTags
   },
   computed: {
     rotateIcon () {

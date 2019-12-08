@@ -1,7 +1,15 @@
 <template>
-  <Table border :columns="columns7" :data="data6"></Table>
+  <div>
+    <!--    <Button v-on:click="onAjax">点击</Button>-->
+    <Table :columns="columns7" :data="data1" border></Table>
+    <Page :total="page.total" :current="page.current" :page-size="page.pageSize" @on-change="handlePage"
+          @on-page-size-change='handlePageSize'
+          :styles="{padding: '10px', float: 'right'}" show-sizer/>
+  </div>
 </template>
 <script>
+import HttpClient from './utils/HttpClient'
+
 export default {
   data () {
     return {
@@ -56,7 +64,9 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.remove(params.index)
+                    console.info(params)
+                    // this.remove(params.index)
+                    this.removeAjax(this, params)
                   }
                 }
               }, 'Delete')
@@ -85,19 +95,86 @@ export default {
           age: 26,
           address: 'Ottawa No. 2 Lake Park'
         }
-      ]
+      ],
+      data1: [],
+      page: {
+        total: 0,
+        pageSize: 10,
+        current: 1
+      }
     }
   },
   methods: {
+    handlePage (value) {
+      console.info('handlePage', value)
+      this.onAjax(value)
+    },
+    handlePageSize () {
+      console.info('handlePageSize')
+    },
     show (index) {
       this.$Modal.info({
         title: 'User Info',
         content: `Name：${this.data6[index].name}<br>Age：${this.data6[index].age}<br>Address：${this.data6[index].address}`
       })
     },
+    remove1 (index) {
+      this.data1.splice(index, 1)
+    },
     remove (index) {
       this.data6.splice(index, 1)
+    },
+    onAjax (current) {
+      HttpClient.request({
+        success: (res) => {
+          // this.$data.items = res.data
+          this.$data.data1 = res.data.data
+          this.$data.page = res.data.page
+          console.info(this.$data.data6)
+          console.info(res.data.data)
+        },
+        method: 'POST',
+        url: '/api/getData2',
+        data: {
+          'current': current,
+          'pageSize': 10
+        },
+        header: {}
+      })
+      // var resultVal = httpclient.httpGet('/api/getData')
+      // console.info(resultVal)
+      // this.$data.val = resultVal
+    },
+    removeAjax (obj, params) {
+      HttpClient.request({
+        success: (res) => {
+          let status = res.data.code
+          if (status === 200) {
+            console.info('删除成功', params, params.index)
+            this.remove1(params.index)
+          }
+        },
+        method: 'GET',
+        url: '/api/remove?id=' + params.row.id,
+        data: {
+          'id': params.row.id
+        },
+        header: {}
+      })
+    },
+    one () {
+      console.info('one')
+    },
+    two () {
+      console.info('two')
     }
+  },
+  created () {
+    this.onAjax(1)
+    this.two()
+  },
+  mounted () {
+    this.one()
   }
 }
 </script>
