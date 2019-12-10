@@ -1,16 +1,23 @@
 <template>
-  <Tabs type="card" closable @on-tab-remove="handleTabRemove" value="name1">
-    <TabPane label="标签一" v-if="tab0" name="name1">
-      <MoolngTable></MoolngTable>
-    </TabPane>
-    <TabPane label="标签二" v-if="tab1">标签二的内容</TabPane>
-    <TabPane label="标签三" v-if="tab2">
-
-    </TabPane>
-  </Tabs>
+    <Tabs v-on:click="rigthOnClick" type="card" closable @on-tab-remove="handleTabRemove" value="name1">
+        <TabPane label="标签一" v-if="tab0" >
+            <MoolngTable></MoolngTable>
+        </TabPane>
+        <TabPane label="标签二" v-if="tab1" name="name1">
+            <my-div :level=1 mtext="A1">L1</my-div>
+            <my-div :level=5 mtext="A2">L5</my-div>
+            <my-div2></my-div2>
+        </TabPane>
+        <TabPane label="标签三" v-if="tab2">
+            <div @contextmenu.prevent="rigthOnClick">aaaa</div>
+        </TabPane>
+    </Tabs>
 </template>
 <script>
 import MoolngTable from './MoolngTable'
+
+import MyRender from './myrender'
+import MyRender2 from './myrender2'
 
 export default {
   data () {
@@ -21,7 +28,9 @@ export default {
     }
   },
   components: {
-    MoolngTable
+    MoolngTable,
+    MyRender,
+    MyRender2
   },
   methods: {
     handleTabRemove (name) {
@@ -44,7 +53,7 @@ export default {
 </script>
 
 <style>
-  .ivu-tabs-bar {
-    margin-bottom: 0px;
-  }
+    .ivu-tabs-bar {
+        margin-bottom: 0px;
+    }
 </style>

@@ -11,10 +11,13 @@ import But from './components/mybutton.js'
 
 import HttpClient from './components/utils/HttpClient'
 
+// import MyRender from './components/MyRender.vue'
+
 Vue.config.productionTip = false
 
 Vue.use(But)
 Vue.use(HttpClient)
+// Vue.use(MyRender)
 
 Vue.use(ViewUI)
 
