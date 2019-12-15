@@ -94,25 +94,33 @@
       </Header>
       <Layout>
         <Sider ref="side1" breakpoint="md" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
-          <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
-            <menu-item name="1-1">
-              <Icon type="ios-navigate"></Icon>
-              <span>Option 1</span>
-            </menu-item>
-            <menu-item name="1-2">
-              <Icon type="ios-search"></Icon>
-              <span>Option 2</span>
-            </menu-item>
-            <menu-item name="1-3">
-              <Icon type="ios-settings"></Icon>
-              <span>Option 3</span>
+          <Menu width="auto" theme="dark" :class="menuitemClasses" @on-select="openMenu2">
+            <menu-item v-for="m in menuData" :name="m.id" :key="m.id">
+              <Icon :type="m.icon"></Icon>
+              <span>{{m.name}}</span>
             </menu-item>
           </Menu>
+          <button v-on:click="openMenu">测试</button>
         </Sider>
         <Layout>
           <Content :style="getContentStyle()">
             <!--            <MoolngTable></MoolngTable>-->
-            <MoolngTags></MoolngTags>
+            <!--            <MoolngTags></MoolngTags>-->
+            <!--            <router-view></router-view>-->
+            <!--            <MoolngIndexTabs v-bind:goToUri="menuData" ></MoolngIndexTabs>-->
+            <tabs type="card" :style="{margin: '10px 10px 0 10px'}">
+              <tab-pane label="首页">
+<!--                <router-view name="routerDataList"></router-view>-->
+                <p>{{ $route.name }}</p>
+              </tab-pane>
+              <TabPane closable v-for="tab in mtabs" :key="tab.id" :label="'标签' + tab.name">
+<!--                <router-link to="/list">跳转到指定Tab + {{tab.routerName}}</router-link>-->
+                <router-view :name="tab.routerName"></router-view>
+              </TabPane>
+            </tabs>
+            <!--            <router-link to="/tabs">跳转到指定Tab</router-link>-->
+            <!--            <router-view></router-view>-->
+            <!--            <router-view></router-view>-->
           </Content>
         </Layout>
       </Layout>
@@ -125,15 +133,48 @@
 <script>
 // import MoolngTable from './components/MoolngTable'
 import MoolngTags from './components/MoolngTags'
+// import MoolngIndexTabs from './components/MoolngIndexTabs'
 
 export default {
-  name: 'MoolngLayout',
+  name: 'MoolngLayout2',
   data () {
     return {
+      mcount: 0,
+      mtabs: [
+        {
+          id: 0,
+          name: '',
+          routerName: '',
+          uri: ''
+        }
+      ],
       isCollapsed: false,
       contentStyleObj: {
         height: ''
-      }
+      },
+      menuData: [
+        {
+          id: 1,
+          icon: 'ios-navigate',
+          name: '用户管理',
+          routerName: 'routerDataList',
+          uri: '/list'
+        },
+        {
+          id: 2,
+          icon: 'ios-search',
+          name: '查找',
+          // routerName: 'MoolngIndex',
+          uri: '/'
+        },
+        {
+          id: 3,
+          icon: 'ios-settings',
+          name: '设置',
+          // routerName: 'tabs',
+          uri: '/tabs'
+        }
+      ]
     }
   },
   components: {
@@ -165,7 +206,36 @@ export default {
     },
     getContentStyle () {
       // return 'height:' + this.getHeight() + '; margin: 20px; background: rgb(255, 255, 255);'
-      return 'height:' + this.getHeight() + '; margin: 20px 20px 0px 20px; background: rgb(255, 255, 255);'
+      return 'height:' + this.getHeight() + '; margin: 10px 10px 0px 10px; background: rgb(255, 255, 255); border-radius:5px;'
+    },
+    pushParam () {
+      console.info(this)
+    },
+    openMenu (obj) {
+      console.info('openMenu')
+      this.$router.replace('/list')
+      // console.info('openMenu')
+      // console.info(obj)
+      // console.info(this)
+      // this.data.mtabs.push()
+    },
+    openMenu2 (index) {
+      console.info('openMenu2')
+      var obj = this.$data.menuData[index - 1]
+      console.info(obj)
+      // console.info(this.$ref.dataNum.dataset.msg)
+      var count = this.$data.mcount
+      // console.info(++count)
+      this.$data.mcount = ++count
+      this.$data.mtabs.push({
+        id: count,
+        name: '名称' + count + obj.name + ':' + obj.uri + ':' + obj.routerName,
+        uri: obj.uri,
+        routerName: obj.routerName
+      })
+      console.info(obj.uri)
+      // setTimeout(this.openMenu, 1000)
+      this.$router.replace(obj.uri)
     }
   },
   created () {

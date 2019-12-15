@@ -43,34 +43,8 @@ export default {
           align: 'center',
           render: (h, params) => {
             return h('div', [
-              // h('Button', {
-              //   props: {
-              //     type: 'primary',
-              //     size: 'small'
-              //   },
-              //   style: {
-              //     marginRight: '5px'
-              //   },
-              //   on: {
-              //     click: () => {
-              //       this.show(params.index)
-              //     }
-              //   }
-              // }, 'View'),
-              this.myRender(h, params, 'Button', 'View', this.clickShow),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                on: {
-                  click: () => {
-                    console.info(params)
-                    // this.remove(params.index)
-                    this.removeAjax(this, params)
-                  }
-                }
-              }, 'Delete')
+              this.myRender(h, params, 'Button', 'View', this.clickShow, this.cshow),
+              this.myRender(h, params, 'Button', 'Delete', this.clickDel, this.cdel)
             ])
           }
         }
@@ -169,8 +143,17 @@ export default {
     two () {
       console.info('two')
     },
-    myRender (h, params, button, name, fun) {
-      return h(button, {
+    myRender (h, params, button, name, fun, fun2) {
+      return h(button, fun2(params, fun), name)
+    },
+    clickShow (params) {
+      this.show(params.index)
+    },
+    clickDel (params) {
+      this.removeAjax(this, params)
+    },
+    cshow (params, fun) {
+      return {
         props: {
           type: 'primary',
           size: 'small'
@@ -179,19 +162,25 @@ export default {
           marginRight: '5px'
         },
         on: {
-          // click: () => {
-          //   this.show(params.index)
-          // }
-          // click: () => {
-          //   // this.clickShow(params)
-          //   return fun
-          // }
           click: () => fun(params)
         }
-      }, name)
+      }
     },
-    clickShow (params) {
-      this.show(params.index)
+    cdel (obj, params) {
+      return {
+        props: {
+          type: 'error',
+          size: 'small'
+        },
+        on: {
+          click: () => {
+            console.info(params)
+            // this.remove(params.index)
+            // this.removeAjax(this, params)
+            this.clickDel(obj, params)
+          }
+        }
+      }
     }
   },
   created () {
